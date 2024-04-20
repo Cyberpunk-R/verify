@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>crash</title>
+  <!-- <link rel="stylesheet" href="./lib/main.css">
+  <link rel="stylesheet" href="./lib/bootstrap/css/bootstrap.min.css">
+  <script src="./lib/GoogleAnalytics.js"></script>
+  <script src="./lib/vue.min.js"></script>
+  <script src="./lib/crypto-js.js"></script>
+  <script src="./lib/tools.js"></script> -->
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"
+    integrity="sha512-nOQuvD9nKirvxDdvQ9OMqe2dgapbPB7vYAMrzJihw5m+aNcf0dX53m6YxM4LgA9u8e9eg9QX+/+mPu8kCNpV2A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- <script src="https://unpkg.com/vue@next"></script> -->
+  <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/@vue/reactivity@3"></script>
+  <script src="https://unpkg.com/@vue/runtime-dom@3"></script>
+  <style type="text/css">
+    
+.crashContainerDiv .title{
+    font-size: 0.4rem;
+  }
+.crashContainerDiv .detail{
+    font-size: 0.18666666666666668rem;
+    margin-top: 0.3466666666666667rem;
+  }
+.crashContainerDiv .line{
+    width: 100%;
+    height: 0.013333333333333334rem;
+    background: #1D2329;
+  }
+.crashContainerDiv .contentDiv{
+  padding-bottom: 100px;
+  margin-top: 0.32rem;
+  }
+.crashContainerDiv .contentDiv .inputDiv{
+  width: 100%;
+  /* width: 18rem; */
+  height: 0.5333333333333333rem;
+  background: #181B1F;
+  border: none;
+  border-radius: 0.10666666666666667rem;
+  margin-top: 0.17333333333333334rem;
+  font-size: 0.18666666666666668rem;
+}
+.crashContainerDiv .contentDiv .inputDiv img{
+  width: 0.22666666666666666rem;
+  height: 0.22666666666666666rem;
+  object-fit: contain;
+  margin-left: 0.26666666666666666rem;
+  margin-right: 0.13333333333333333rem;
+}
+.crashContainerDiv .contentDiv .inputDiv input{
+  width: 100%;
+  height: 0.5333333333333333rem;
+  border: 0px solid #000000;
+  color: #fff;
+  background: transparent;
+  font-size: 0.18666666666666668rem;
+  font-family: Myriad Pro;
+  font-weight: 400;
+  border: none;
+  outline:none;
+margin-left: 0.25333333333333335rem;
+}
+.crashContainerDiv .contentDiv .hashList{
+  display: none;
+}
+.table table{
+  margin-top: 0.32rem;
+  width: 100%;
+  font-size:0.18666666666666668rem;
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-align: left;
+  
+}
+.table table  tr{
+  padding: 0.17333333333333334rem 0.36rem;
+  height: 0.5333333333333333rem;
+}
+
+.table table  tr .one{
+  padding-left: 0.17333333333333334rem;
+}
+.table table  tr .two{
+  width: 20%;
+}
+@media screen and (max-width: 750px) {
+.crashContainerDiv{
+  /* width: 100vw;
+  height: 100vh; */
+  padding: 14vw 6.27vw 0 6.27vw;
+}
+.crashContainerDiv .title{
+    font-size: 8vw;
+  }
+.crashContainerDiv .detail{
+    font-size: 5.333333vw;
+    margin-top:0;
+  }
+.crashContainerDiv .line{
+    width: 100%;
+    height: 0.266667vw;
+    background: #30333A;
+  }
+.crashContainerDiv .contentDiv{
+  margin-top: 7.733333vw;
+  padding-bottom: 15.733333vw;
+  }
+.crashContainerDiv .contentDiv .inputDiv{
+  width: 87.466667vw;
+  height: 9.2vw;
+  background: #1D1E22;
+  border: 0px solid #000000;
+  border-radius: 1.066667vw;
+  margin-top: 3.733333vw;
+  font-size: 4.4vw;
+}
+.crashContainerDiv .contentDiv .inputDiv img{
+  width: 6.666667vw;
+  height: 6.666667vw;
+  object-fit: contain;
+  margin-left: 0.933333vw;
+  margin-right: 2vw;
+}
+.crashContainerDiv .contentDiv .inputDiv input{
+  width: 75.6vw;
+  height: 4.666667vw;
+  /* background: #22222A; */
+  border: 0px solid #000000;
+  color: #fff;
+  background: transparent;
+  font-size: 4.4vw;
+  font-family: Myriad Pro;
+  font-weight: 400;
+  border: none;
+  outline:none;
+
+}
+/* .crashContainerDiv .contentDiv .verifyBtn{
+  width: 16.666667vw;
+  height: 9.2vw;
+  border: 0px solid #000000;
+  margin-top: 2.933333vw;
+  line-height: 9.2vw;
+  font-size: 3.466667vw ;
+} */
+.table{
+  display: none;
+}
+.crashContainerDiv .contentDiv .hashList{
+  margin-top: 8.533333vw;
+  display: block;
+}
+.crashContainerDiv .contentDiv .hashList .griditem{
+  width: 87.466667vw;
+  height: 9.2vw;
+  font-size: 4.4vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+}
+
+
+  </style>
+
+</head>
+
+<body
+  style="font-family:Myriad Pro, Inter,-apple-system,Framedcn,Helvetica Neue,Condensed,DisplayRegular,Helvetica,Arial,PingFang SC,Hiragino Sans GB,WenQuanYi Micro Hei,Microsoft Yahei,sans-serif;">
+
+<div id="app">
+  <div class="crashContainerDiv strangBox wrapPadding">
+    <div class="titleDiv" >
+      <div class="title normalText c1">Crash - Game Verification Script</div>
+      <!-- <div class="fn60 normalText c1"></div> -->
+      <div class="detail textF c25">Third party script used to verify games on crash game.</div>
+      <div class="line mt35"></div>
+    </div>
+    <div class="contentDiv ">
+      <p class="fn35 c25 textF">Game's hash</p>
+      <div class="inputDiv aic mb30">
+        <img src="./image/keyIcon.png " alt="">
+        <input type="text" v-model="hashText" class="bg48">
+      </div>
+      <p class="fn35 c25 textF">Amount of games</p>
+      <div class="inputDiv aic">
+        <img src="./image/hashTag.png " alt="">
+        <input type="text" v-model="hashCount">
+      </div>
+      <div class="verifyBtn bg3 br8 c1 textCenter normalText" @click="onVerifyBtn">Verify</div>
+      <div class="line mt45"></div>
+      <div class="hashList">
+        <div class="griditem">
+          <span class="fn35 c25 textF ml16">Game's hash</span>
+          <span class="bust fn35 c25 textF mr52">Bust</span>
+        </div>
+        <div class="griditem " v-for="(item,index) in hashData" :key="index" :class="index%2==0 ? 'bg6' : ''">
+          <span class=" c2 textF flex-1 ellipsisHidden ml16">{{item.hash}}</span>
+          <span class="bust textF mr59 ml45" :class="item.bust>2 ? 'c21' : 'c22'">{{item.bust}}</span>
+        </div>
+  
+      </div>
+      <div class="table">
+        <table>
+          <thead>
+            <tr class="c2">
+              <th class="one">Game's hash</th>
+              <th class="two">Bust</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item,index) in hashData" :key="index" :class="index%2==0 ? 'bg6' : ''">
+              <td class="c3 one">{{item.hash}}</td>
+              <td class="two" :class="item.bust>2 ? 'c21' : 'c22'">{{item.bust}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+<script type="module">
+  const { ref, onMounted  } = Vue;
+  const app = Vue.createApp({
+    data() {
+      // 路径
+      const route = window.location.search.replace('?', '').split('&').reduce((res, item) => {
+        let kv = item.split('=');
+        res[kv[0]] = kv[1];
+        return res;
+      }, {})
+
+      const hashText = ref(route.gameHash || 'b4d5jdaksjdkoasjokdjaskjdoasjdoijasdaspgkpgoreg436i5904386045jgt4590y8650')
+      const hashCount = ref('10')
+      const hashData = ref([])
+
+      // const gameResult = (seed,salt) => {
+      const gameResult = (seed) => {
+        const nBits = 52; // number of most significant bits to use
+
+        // 1. HMAC_SHA256(message=seed, key=salt)  
+        // if (salt) {
+        //   const hmac = CryptoJS.HmacSHA256(CryptoJS.enc.Hex.parse(seed), salt);
+        //   seed = hmac.toString(CryptoJS.enc.Hex);
+        // }
+        
+        // 1. r = 52 most significant bits
+        seed = seed.slice(0, nBits / 4);
+        const r = parseInt(seed, 16);
+        // 2. X = r / 2^52
+        let X = r / Math.pow(2, nBits); // uniformly distributed in [0; 1)
+        X = parseFloat(X.toPrecision(9));
+        // 3. X = 99 / (1-X)
+        X = 99 / (1 - X);
+        // 4. return max(trunc(X), 100)
+        const result = Math.floor(X);
+        return Math.max(1, result / 100);
+      };
+      
+      const onVerifyBtn = () => {
+        hashData.value = []
+        let prevHash = null;
+        for (let i = 0; i < hashCount.value; i++) {
+          let hash = String(prevHash ? CryptoJS.SHA256(String(prevHash)) : hashText.value )
+          let bustData = gameResult(hash)
+          // let bustData = gameResult(hash,'0000000000000000000301e2801a9a9598bfb114e574a91a887f2132f33047e6')
+          hashData.value.push({ hash: hash, bust: bustData })
+          prevHash = hash;
+        }
+
+      }
+      onVerifyBtn()
+      // onMounted(() => {
+      //   onVerifyBtn()
+      // })
+
+
+
+      return { hashText, hashCount, hashData, onVerifyBtn, gameResult }
+    },
+  });
+
+  app.mount('#app');
+
+
+</script>
+
+</html>
