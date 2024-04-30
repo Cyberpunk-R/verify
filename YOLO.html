@@ -172,6 +172,15 @@
     .verificationResultWrap .seedWrap .seedDiv .seedItem p{
       font-size: 0.18666666666666668rem;
       margin-top:0.12rem ;
+      display: flex;
+    }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem p span{
+      margin-left:0.26666666666666666rem;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
     }
     .verificationResultWrap .seedWrap .seedDiv .seedItem p:last-child{
       margin-top:0.16rem ;
@@ -337,10 +346,11 @@
     .verificationResultWrap .seedWrap .seedDiv .seedItem p{
       font-size: 3.467vw;
       margin-top:1.467vw ;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem p span{
+      margin-left:8vw;
+    }
+
     .verificationResultWrap .seedWrap .seedDiv .seedItem p:last-child{
       margin-top:2.800vw ;
     }
@@ -355,23 +365,19 @@
   <div id="app">
     <div class="yoloContainerDiv strangBox wrapPadding">
       <div class="titleDiv strangBox pr47">
-        <div class="title normalText c1">YOLO verificationinstructions</div>
-        <div class="detail textF c25">the verification process involves thefollowing steps:</div>
+        <div class="title normalText c1">YOLO Game Verification Instructions</div>
+        <!-- <div class="detail textF c25">the verification process involves thefollowing steps:</div> -->
         <div class="textDetail c25">
-          4.Fetch the transaction receipt and blockinformation.  <br/>
-          2.Decode the logs to extract the drand roundused by Gelato VRF and the requestld. <br/>
-          3.Fetch the drand chain information todetermine the randomness delay. <br/>
-          4.Fetch the drand randomness and calculatethe random value. <br/>
-          5.Validate the drand beacon randomness.<br/>
-          6.Fetch the YOLO round and determine theexpected winner based on the random value. <br/>
-          7.Compare the expected winner with the actualwinner to verify the YOLO result.<br/>
+          1. Enter the Round ID to query the client seed, Drand chain randomness, and hash value used in that round.  <br/>
+          2. The client seed will only take the first and last player's seeds. <br/>
+          3. Click Verify to validate the results of the game for the specific round. <br/>
         </div>
         <div class="line mt35"></div>
       </div>
       <div class="contentDiv ">
         <div class="inputWrap flex-column flex-start strangBox pr47">
-          <div class="c1 fn60 normalText mb30">Verify a YOLO result</div>
-          <p class="fn35 c25 textF">round ID:</p>
+          <div class="c1 fn60 normalText mb30">YOLO Round Seeds and Drand</div>
+          <p class="fn35 c25 textF">Round ID:</p>
           <div class="roundDiv mb30 mt28">
             <div class="inputDiv  aic ">
               <input type="text" v-model="inputServerText" @input.prevent="inputFuc">
@@ -382,41 +388,44 @@
           <div class="inputDiv mt28 aic mb30">
             <input type="text" v-model="inputClientText">
           </div>
-          <p class="fn35 c25 textF ">player1 seed:</p>
+          <p class="fn35 c25 textF ">PlayerSeed N2:</p>
           <div class="inputDiv mt28 aic mb30">
             <input type="text" v-model="inputClientText">
           </div>
-          <p class="fn35 c25 textF ">player2 seed:</p>
+          <p class="fn35 c25 textF ">PlayerSeed N1:</p>
           <div class="inputDiv mt28 aic mb30">
             <input type="text" v-model="inputClientText">
           </div>
-          <p class="fn35 c25 textF ">hasha id:</p>
+          <p class="fn35 c25 textF ">YOLO HASH:</p>
           <div class="inputDiv mt28 aic mb30">
             <input type="text" v-model="inputClientText">
           </div>
           <div class="verifyBtn self_center bg3 br8 c1  textCenter normalText" @click="onVerifyBtn">Verify</div>
           <div class="verificationResultWrap">
-            <div class="resultTitle c2">YOLO Round Verification Result</div>
+            <div class="resultTitle c2">YOLO Verification Results</div>
             <div class="radioWrap flex aic">
             <div class="radioDiv" @click="radioONE = !radioONE"><img src="./image/choosed.png" alt="" v-if="radioONE"></div>
-            <label>The expected winner matches the actual winner.</label>
+            <label>The actual winner matches the verified winner.</label>
             </div>
             <div class="flex aic">
             <div class="radioDiv" @click="radioTWO = !radioTWO"><img src="./image/choosed.png" alt="" v-if="radioTWO"></div>
-            <label>The signature of the randomness is valid.</label>
+            <label>The Drand function verification is correct.</label>
             </div>
             <div class="textInfo">
-              <p>Round lD: 35166</p>
-              <p>Expected winner: xxxxxxxxxxx</p>
-              <p>Actual winner: ------xxxxxxxxxxx</p>
-              <p>The random value was generated x seconds after the round ended.</p>
+              <p>Round ID: 35166</p>
+              <p>Actual Winner: xxxxxxxxxxx</p>
+              <p>Verified Winner: ------xxxxxxxxxxx</p>
+              <p>Game winning results obtained within (val1) seconds.</p>
             </div>
-            <p class="seedTitle">Players bet with seeds</p>
+            <p class="seedTitle">Player Bets and Seeds</p>
             <div class="seedWrap">
               <div class="seedDiv">
                 <div class="seedItem" v-for="item in 15">
-                  <p class="c2">player: xxxxxxx</p>
-                  <p class="c2">Bet Value: 0.01ETH Seed: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</p>
+                  <p class="c2">Player Nickname: xxxxxxx</p>
+                  <p class="c2">Bet Amount: 0.01ETH 
+                    <span> Seed: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
+                    
+                  </p>
                 </div>
               </div>
             </div>
@@ -424,16 +433,14 @@
           <div class="line mt35"></div>
         </div>
       <div class="titleDiv mt57">
-        <div class="title normalText c1">How does the verification process</div>
-        <div class="detail textF c25">the verification process involves thefollowing steps:</div>
+        <div class="title normalText c1">YOLO Verification Process</div>
+        <!-- <div class="detail textF c25">the verification process involves thefollowing steps:</div> -->
         <div class="textDetail c25">
-          4.Fetch the transaction receipt and blockinformation. <br />
-          2.Decode the logs to extract the drand roundused by Gelato VRF and the requestld. <br />
-          3.Fetch the drand chain information todetermine the randomness delay. <br />
-          4.Fetch the drand randomness and calculatethe random value. <br />
-          5.Validate the drand beacon randomness.<br />
-          6.Fetch the YOLO round and determine theexpected winner based on the random value. <br />
-          7.Compare the expected winner with the actualwinner to verify the YOLO result.<br />
+          1. Retrieve the player seeds for the round using the Round ID. <br />
+          2. Obtain the randomness generated by the Drand chain for the round. <br />
+          3. Generate a SHA-512 hash value using the player seeds and randomness.<br />
+          4. Calculate the game's random value from the hash value.<br />
+          5. Compare the verified winner with the actual game winner to validate the YOLO results.<br />
         </div>
       </div>
         
@@ -453,7 +460,6 @@
         return res;
       }, {})
       console.log(route);
-
       const inputServerText = ref(route.sSeed || '0334057e4c6734bea6ea8faa11fb2eebb778782e96b53d9001a10d2c4e1f5969')
       const inputClientText = ref(route.cSeed || '0xae3666909c3b32f1f53229a2ddaeb6fd868bde82a30903dca573a99659e3942f')
       const outputHmacText = ref('b4d5jdaksjdkoasjokdjaskjdoasjdoijasdaspgkp')
