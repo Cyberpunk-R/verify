@@ -144,12 +144,12 @@
      width: 100%;
      background: #141619;
      padding-right:0.17333333333333334rem;
-     height:5.133333333333334rem;
+     max-height:5.133333333333334rem;
      border-radius:0.10666666666666667rem;
     }
     .verificationResultWrap .seedWrap .seedDiv{
      width: 100%;
-     height:5.133333333333334rem;
+     max-height:5.133333333333334rem;
      overflow: auto;
      padding: 0 0.18666666666666668rem 0 0.41333333333333333rem;
     }
@@ -321,11 +321,11 @@
     .verificationResultWrap .seedWrap{
      background: #141619;
      padding-right:0.933vw;
-     height:82.533vw;
+     max-height:82.533vw;
      border-radius:0.8vw;
     }
     .verificationResultWrap .seedWrap .seedDiv{
-     height:82.533vw;
+     max-height:82.533vw;
      padding: 0 1.6vw 0 0.8vw;
     }
     .verificationResultWrap .seedWrap .seedDiv::-webkit-scrollbar {
@@ -381,50 +381,51 @@
           <p class="fn35 c25 textF">Round ID:</p>
           <div class="roundDiv mb30 mt28">
             <div class="inputDiv  aic ">
-              <input type="text" v-model="inputServerText" @input.prevent="inputFuc">
+              <input type="text" v-model="inputRound" @input.prevent="inputFuc">
             </div>
-            <div class="detailBtn bg3 br8 c1  textCenter normalText">Details</div>
+            <div class="detailBtn bg3 br8 c1  textCenter normalText" @click="changeRound">Details</div>
           </div>
           <p class="fn35 c25 textF ">Drand randomness:</p>
           <div class="inputDiv mt28 aic mb30">
-            <input type="text" v-model="inputClientText">
+            <input type="text" v-model="drandRandomness">
           </div>
           <p class="fn35 c25 textF ">PlayerSeed N1:</p>
           <div class="inputDiv mt28 aic mb30">
-            <input type="text" v-model="inputClientText">
+            <input type="text" v-model="playerSeedN1">
           </div>
           <p class="fn35 c25 textF ">PlayerSeed N2:</p>
           <div class="inputDiv mt28 aic mb30">
-            <input type="text" v-model="inputClientText">
+            <input type="text" v-model="playerSeedN2">
           </div>
           <p class="fn35 c25 textF ">YOLO HASH:</p>
           <div class="inputDiv mt28 aic mb30">
-            <input type="text" v-model="inputClientText">
+            <input type="text" v-model="yoLoHash">
           </div>
           <div class="verifyBtn self_center bg3 br8 c1  textCenter normalText" @click="onVerifyBtn">Verify</div>
-          <div class="verificationResultWrap">
+          <div class="verificationResultWrap" v-show="verifyBool">
             <div class="resultTitle c2">YOLO Verification Results</div>
             <div class="radioWrap flex aic">
-            <div class="radioDiv" @click="radioONE = !radioONE"><img src="./image/choosed.png" alt="" v-if="radioONE"></div>
+            <div class="radioDiv" ><img src="./image/choosed.png" alt="" v-if="radioONE"></div>
+            <!-- <div class="radioDiv" @click="radioONE = !radioONE"><img src="./image/choosed.png" alt="" v-if="radioONE"></div> -->
             <label>The actual winner matches the verified winner.</label>
             </div>
             <div class="flex aic">
-            <div class="radioDiv" @click="radioTWO = !radioTWO"><img src="./image/choosed.png" alt="" v-if="radioTWO"></div>
+            <div class="radioDiv"><img src="./image/choosed.png" alt="" v-if="radioTWO"></div>
+            <!-- <div class="radioDiv" @click="radioTWO = !radioTWO"><img src="./image/choosed.png" alt="" v-if="radioTWO"></div> -->
             <label>The Drand function verification is correct.</label>
             </div>
             <div class="textInfo">
-              <p>Round ID: 35166</p>
-              <p>Actual Winner: xxxxxxxxxxx</p>
-              <p>Verified Winner: ------xxxxxxxxxxx</p>
-              <p>Game winning results obtained within (val1) seconds.</p>
+              <p>Round ID: {{inputRound}}</p>
+              <p>Actual Winner: {{actualWinner}}</p>
+              <p>Verified Winner: {{verifiedWinner}}</p>
             </div>
             <p class="seedTitle">Player Bets and Seeds</p>
             <div class="seedWrap">
               <div class="seedDiv">
-                <div class="seedItem" v-for="item in 15">
-                  <p class="c2">Player Nickname: xxxxxxx</p>
-                  <p class="c2">Bet Amount: 0.01ETH 
-                    <span> Seed: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
+                <div class="seedItem" v-for="item in players">
+                  <p class="c2">Player Nickname: {{item.nickName}}</p>
+                  <p class="c2">Bet Amount: {{item.betAmount}}
+                    <span> Seed: {{item.clientSeed}}</span>
                     
                   </p>
                 </div>
@@ -433,7 +434,7 @@
           </div>
           <div class="line mt35"></div>
         </div>
-      <div class="titleDiv mt57">
+      <div class="titleDiv mt57 strangBox pr47">
         <div class="title normalText c1">YOLO Verification Process</div>
         <!-- <div class="detail textF c25">the verification process involves thefollowing steps:</div> -->
         <div class="textDetail c25">
@@ -461,53 +462,68 @@
         return res;
       }, {})
       console.log(route);
-      const inputServerText = ref(route.sSeed || '0334057e4c6734bea6ea8faa11fb2eebb778782e96b53d9001a10d2c4e1f5969')
-      const inputClientText = ref(route.cSeed || '0xae3666909c3b32f1f53229a2ddaeb6fd868bde82a30903dca573a99659e3942f')
-      const outputHmacText = ref('b4d5jdaksjdkoasjokdjaskjdoasjdoijasdaspgkp')
-      const outputResult = ref('023, 055, 134')
+      const inputRound = ref(route.round)
+      const drandRandomness = ref(0)
+      const playerSeedN1 = ref(0)
+      const playerSeedN2 = ref(0)
+      const yoLoHash = ref(0)
+      const verifiedWinner = ref(0)
+      const actualWinner = ref(0)
+      const players = ref([])
+      const verifyBool=ref(false)
       const radioONE=ref(true)
       const radioTWO=ref(true)
+
+      const callAPI=(data)=>{
+        fetch(`http://192.168.0.171:10800/xpg/CheckGameYolo?round=${inputRound.value}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('网络错误');
+            }
+            return response.json();
+          })
+          .then(res => {
+            console.log('接口返回的数据:', res);
+            // 这里可以对返回的数据进行处理
+            drandRandomness.value=res.data.drandRandomness
+            playerSeedN1.value=res.data.playerSeedN1
+            playerSeedN2.value=res.data.playerSeedN2
+            yoLoHash.value=res.data.yoLoHash
+            verifiedWinner.value=res.data.verifiedWinner
+            actualWinner.value=res.data.actualWinner
+            players.value= JSON.parse(res.data.players)
+            console.log(players.value);
+          })
+          .catch(error => {
+            console.error('发生错误:', error);
+          });
+      }
 
       const inputFuc = (e) => {
         e.preventDefault();
 
       }
 
-      const hmacSHAText = computed(() => {
-        return String(CryptoJS.HmacSHA256(inputClientText.value, inputServerText.value))
-      })
-      const getRandomByHash = (hash) => {
-        return hash.match(/.{2}/g)
-          .map(it => parseInt(it, 16))
-          .reduce((res, it, i) => res + it / (256 ** (i + 1)), 0);
-      }
-      const getBalls = () => {
-        const remainingBalls = Array(36).fill(null).map((v, i) => i + 1);
-        const balls = [];
-        for (let i = 0; i < 5; i++) {
-          const random = getRandomByHash(outputHmacText.value.substr(i * 8, 8));
-          const ballIndex = Math.floor(random * remainingBalls.length);
-
-          balls.push(remainingBalls.splice(ballIndex, 1)[0]);
-        }
-        return balls.join(', ');
-      }
-
+      
       const onVerifyBtn = () => {
-        outputHmacText.value = hmacSHAText.value
-        outputResult.value = getBalls()
+
+        verifyBool.value = true
+      }
+      const changeRound = () => {
+        verifyBool.value = false
+        callAPI()
       }
       onMounted(() => {
-        onVerifyBtn()
+        callAPI()
       })
 
 
 
       return {
-        inputServerText, inputClientText, outputHmacText, outputResult,
-        hmacSHAText,
+        inputRound, drandRandomness, playerSeedN1, playerSeedN2, yoLoHash, verifiedWinner, players, actualWinner,
         onVerifyBtn, inputFuc,
-        radioONE, radioTWO
+        radioONE, radioTWO, verifyBool,
+        callAPI, changeRound
       }
     },
   });
