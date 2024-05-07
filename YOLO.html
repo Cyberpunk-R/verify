@@ -387,19 +387,19 @@
           </div>
           <p class="fn35 c25 textF ">Drand randomness:</p>
           <div class="inputDiv mt28 aic mb30">
-            <input type="text" v-model="drandRandomness">
+            <input type="text" v-model="drandRandomness" readonly>
           </div>
           <p class="fn35 c25 textF ">PlayerSeed N1:</p>
           <div class="inputDiv mt28 aic mb30">
-            <input type="text" v-model="playerSeedN1">
+            <input type="text" v-model="playerSeedN1" readonly> 
           </div>
           <p class="fn35 c25 textF ">PlayerSeed N2:</p>
           <div class="inputDiv mt28 aic mb30">
-            <input type="text" v-model="playerSeedN2">
+            <input type="text" v-model="playerSeedN2" readonly>
           </div>
           <p class="fn35 c25 textF ">YOLO HASH:</p>
           <div class="inputDiv mt28 aic mb30">
-            <input type="text" v-model="yoLoHash">
+            <input type="text" v-model="yoLoHash" readonly>
           </div>
           <div class="verifyBtn self_center bg3 br8 c1  textCenter normalText" @click="onVerifyBtn">Verify</div>
           <div class="verificationResultWrap" v-show="verifyBool">
