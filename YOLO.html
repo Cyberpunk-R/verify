@@ -475,7 +475,7 @@
       const radioTWO=ref(true)
 
       const callAPI=(data)=>{
-        fetch(`http://192.168.0.171:10800/xpg/CheckGameYolo?round=${inputRound.value}`)
+        fetch(`https://xpgameserver.cyberpunkr.io/xpg/CheckGameYolo?round=${inputRound.value}`)
           .then(response => {
             if (!response.ok) {
               throw new Error('网络错误');
