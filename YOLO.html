@@ -461,8 +461,8 @@
         res[kv[0]] = kv[1];
         return res;
       }, {})
-      console.log(route);
-      const inputRound = ref(route.round)
+      // console.log(route);
+      const inputRound = ref(route.round || 1327)
       const drandRandomness = ref(0)
       const playerSeedN1 = ref(0)
       const playerSeedN2 = ref(0)
@@ -483,16 +483,14 @@
             return response.json();
           })
           .then(res => {
-            console.log('接口返回的数据:', res);
             // 这里可以对返回的数据进行处理
             drandRandomness.value=res.data.drandRandomness
             playerSeedN1.value=res.data.playerSeedN1
             playerSeedN2.value=res.data.playerSeedN2
             yoLoHash.value=res.data.yoLoHash
-            verifiedWinner.value=res.data.verifiedWinner
-            actualWinner.value=res.data.actualWinner
-            players.value= JSON.parse(res.data.players)
-            console.log(players.value);
+            verifiedWinner.value=res.data.verifiedWinner ? res.data.verifiedWinner : 'NULL'
+            actualWinner.value=res.data.actualWinner ? res.data.actualWinner : 'NULL'
+            players.value= res.data.players ? JSON.parse(res.data.players):[]
           })
           .catch(error => {
             console.error('发生错误:', error);
