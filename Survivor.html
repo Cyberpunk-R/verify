@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Survivor</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"
+    integrity="sha512-nOQuvD9nKirvxDdvQ9OMqe2dgapbPB7vYAMrzJihw5m+aNcf0dX53m6YxM4LgA9u8e9eg9QX+/+mPu8kCNpV2A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- <script src="https://unpkg.com/vue@next"></script> -->
+  <script src="https://unpkg.com/vue@3.2.36/dist/vue.global.prod.js"></script>
+  <script src="https://unpkg.com/@vue/reactivity@3"></script>
+  <script src="https://unpkg.com/@vue/runtime-dom@3"></script>
+  <style type="text/css">
+    /* https://cyberpunk-r.github.io/verify/crash.html */
+    ::-webkit-scrollbar {
+      height: 0.08rem;
+      display: block;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #1D2329;
+      border-radius: 0.02666666666666667rem;
+    }
+
+    .survivorContainerDiv .title {
+      font-size: 0.4rem;
+    }
+
+    .survivorContainerDiv .detail {
+      font-size: 0.18666666666666668rem;
+      margin-top: 0.4266666666666667rem; /* 32px */
+    }
+    .survivorContainerDiv .textDetail {
+      font-size: 0.18666666666666668rem;
+      margin-top: 0.22666666666666666rem; /* 32px */
+      line-height: 0.26666666666666666rem;
+    }
+    .survivorContainerDiv .line {
+      width: 100%;
+      height: 0.013333333333333334rem;
+      background: #1D2329;
+    }
+
+
+    .survivorContainerDiv .contentDiv {
+      padding-bottom: 1.3333333333333333rem;
+      margin-top: 0.32rem;
+    }
+    .survivorContainerDiv .contentDiv .roundDiv{
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .survivorContainerDiv .contentDiv .roundDiv .detailBtn{
+      width:2.6666666666666665rem;
+      height:0.5333333333333333rem;
+      margin-left: 0.6533333333333333rem;/* 49px */
+      font-size: 0.18666666666666668rem;
+      line-height: 0.5333333333333333rem;
+      margin-top: 0.17333333333333334rem;
+    }
+
+    .survivorContainerDiv .contentDiv .inputDiv {
+      width: 100%;
+      /* width: 18rem; */
+      height: 0.5333333333333333rem;
+      background: #181B1F;
+      border: none;
+      border-radius: 0.10666666666666667rem;
+      margin-top: 0.17333333333333334rem;
+      font-size: 0.18666666666666668rem;
+
+    }
+
+    .survivorContainerDiv .contentDiv .inputDiv input {
+      width: 100%;
+      height: 0.5333333333333333rem;
+      border: 0px solid #000000;
+      color: #fff;
+      background: transparent;
+      font-size: 0.18666666666666668rem;
+      font-family: Myriad Pro;
+      font-weight: 400;
+      border: none;
+      outline: none;
+      margin-left: 0.25333333333333335rem;
+    }
+    .verificationResultWrap{
+      width:100%;
+      /* background: #1D2329; */
+      /* padding: 0.26666666666666666rem 0.4rem;20px 30px */
+      margin-top: 0.4rem;/* 30px */
+    }
+    .verificationResultWrap .resultTitle{
+      font-size: 0.32rem;
+    }
+    .verificationResultWrap .radioDiv{
+      width: 0.21333333333333335rem;
+      height: 0.21333333333333335rem;
+      background: #FFFFFF;
+      border-radius: 0.05333333333333334rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .verificationResultWrap .radioDiv img{
+      width: 90%;
+      object-fit: contain;
+      filter: invert(1);
+    }
+    .verificationResultWrap .radioWrap{
+      margin-bottom:0.26666666666666666rem;
+      margin-top: 0.4rem;
+    }
+    .verificationResultWrap label{
+      font-size:0.18666666666666668rem;
+      color: #808B9B;
+      margin-left:0.17333333333333334rem ;
+    }
+    .verificationResultWrap .textInfo{
+      font-size:0.21333333333333335rem;
+      color: #808B9B;
+      margin-top:0.5333333333333333rem ;
+    }
+    .verificationResultWrap .textInfo p{
+      margin-bottom: 0.22666666666666666rem;
+    }
+    .verificationResultWrap .textInfo p:nth-child(3){
+      margin-bottom: 0.5333333333333333rem;
+    }
+    .verificationResultWrap .textInfo p:last-child{
+      margin-bottom: 0.5333333333333333rem;
+    }
+    .verificationResultWrap .seedTitle{
+     margin-bottom: 0.22666666666666666rem;
+     color: #808B9B;
+     font-size: 0.32rem;
+    }
+    .verificationResultWrap .seedWrap{
+     width: 100%;
+     background: #141619;
+     padding-right:0.17333333333333334rem;
+     max-height:5.133333333333334rem;
+     border-radius:0.10666666666666667rem;
+    }
+    .verificationResultWrap .seedWrap .seedDiv{
+     width: 100%;
+     max-height:5.133333333333334rem;
+     overflow: auto;
+     padding: 0 0.18666666666666668rem 0 0.41333333333333333rem;
+    }
+    .verificationResultWrap .seedWrap .seedDiv::-webkit-scrollbar {
+      width: 0.04rem !important;
+      display: block;
+    }
+    .verificationResultWrap .seedWrap .seedDiv::-webkit-scrollbar-thumb {
+      background-color: #2C333C;
+      border-radius: 0.02666666666666667rem;
+    }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem{
+     width: 100%;
+     height: 0.8rem;
+     padding: 0 0.32rem;
+    }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem:not(:last-child){
+     border-bottom: 0.013333333333333334rem solid #22272E;
+    }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem p{
+      font-size: 0.18666666666666668rem;
+      margin-top:0.12rem ;
+      display: flex;
+    }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem p span{
+      margin-left:0.26666666666666666rem;
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+    }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem p:last-child{
+      margin-top:0.16rem ;
+    }
+    
+    .survivorContainerDiv .contentDiv .textWrap {
+      margin-top: 0.5466666666666666rem;/* 41px */
+      
+    }
+    @media screen and (max-width: 750px) {
+      ::-webkit-scrollbar {
+        height: 0.933333vw;
+        display: block;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background-color: #30333A;
+        border-radius: 0.8vw;
+      }
+
+      .survivorContainerDiv .title {
+        font-size: 8vw;
+      }
+
+      .survivorContainerDiv .detail {
+        font-size: 5.333333vw;
+        margin-top: 0;
+      }
+    .survivorContainerDiv .textDetail {
+      font-size: 4.400vw;
+      margin-top: 3.467vw; /* 32px */
+      line-height: 5.8vw;
+    }
+
+      .survivorContainerDiv {
+        /* width: 100%;
+  height: 100%; */
+        padding-top: 14vw;
+        padding-left: 6.266667vw;
+      }
+
+      .survivorContainerDiv .line {
+        width: 100%;
+        height: 0.266667vw;
+        background: #30333A;
+      }
+
+      .survivorContainerDiv .contentDiv {
+        padding-bottom: 15.733333vw;
+        margin-top: 3.2vw;
+      }
+    .survivorContainerDiv .contentDiv .roundDiv{
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .survivorContainerDiv .contentDiv .roundDiv .detailBtn{
+      width:16.667vw;
+      height:9.2vw;
+      margin-left:3.2vw;/* 49px */
+      font-size: 3.467vw;
+      line-height: 9.2vw;
+      margin-top: 0;
+    }
+
+      .survivorContainerDiv .contentDiv .inputDiv {
+        /* width: 87.466667vw; */
+        height: 9.2vw;
+        background: #1D1E22;
+        border: 0px solid #000000;
+        border-radius: 1.066667vw;
+        font-size: 4.4vw;
+        margin-top: 0;
+      }
+
+      .survivorContainerDiv .contentDiv .inputDiv input {
+        /* width: 81.866667vw; */
+        height: 4.133333vw;
+        border: 0px solid #000000;
+        color: #fff;
+        background: transparent;
+        font-size: 4.4vw;
+        font-family: Myriad Pro;
+        font-weight: 400;
+        margin-left: 2.933333vw;
+        border: none;
+        outline: none;
+      }
+
+      .survivorContainerDiv .contentDiv .verifyBtn {
+        width: 16.666667vw;
+        height: 9.2vw;
+        border: 0px solid #000000;
+        margin-top: 5.333333vw;
+        line-height: 9.2vw;
+      }
+    .verificationResultWrap{
+      background: #181B1F;
+      padding: 3.2vw 1.067vw ;
+      margin-top: 2.933vw;
+    }
+    .verificationResultWrap .resultTitle{
+      font-size:4.667vw;
+    }
+    .verificationResultWrap .radioDiv{
+      width: 3.467vw;
+      height: 3.467vw;
+      border-radius: 1.067vw;
+    }
+    .verificationResultWrap .radioDiv img{
+      width: 80%;
+    }
+    .verificationResultWrap .radioWrap{
+      margin-bottom:3.733vw;
+      margin-top: 4vw;
+    }
+    .verificationResultWrap label{
+      font-size:3.733vw;
+      margin-left:1.6vw ;
+    }
+    .verificationResultWrap .textInfo{
+      font-size:4.667vw;
+      margin-top:6.533vw;
+    }
+    .verificationResultWrap .textInfo p{
+      margin-bottom: 3.2vw;
+    }
+    .verificationResultWrap .textInfo p:nth-child(3){
+      margin-bottom: 8.133vw;
+    }
+    .verificationResultWrap .textInfo p:last-child{
+      margin-bottom: 8.533vw;
+    }
+    .verificationResultWrap .seedTitle{
+     margin-bottom: 2.800vw;
+     font-size:4.667vw;
+    }
+    .verificationResultWrap .seedWrap{
+     background: #141619;
+     padding-right:0.933vw;
+     max-height:82.533vw;
+     border-radius:0.8vw;
+    }
+    .verificationResultWrap .seedWrap .seedDiv{
+     max-height:82.533vw;
+     padding: 0 1.6vw 0 0.8vw;
+    }
+    .verificationResultWrap .seedWrap .seedDiv::-webkit-scrollbar {
+      width: 0.667vw !important;
+      display: block;
+    }
+    .verificationResultWrap .seedWrap .seedDiv::-webkit-scrollbar-thumb {
+      background-color: #30363E;
+      border-radius: 0.4vw;
+    }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem{
+     width: 100%;
+     height: 13.200vw;
+     padding: 0 0.8vw;
+    }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem:not(:last-child){
+     border-bottom: 0.133vw solid #22272E;
+    }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem p{
+      font-size: 3.467vw;
+      margin-top:1.467vw ;
+    }
+    .verificationResultWrap .seedWrap .seedDiv .seedItem p span{
+      margin-left:8vw;
+    }
+
+    .verificationResultWrap .seedWrap .seedDiv .seedItem p:last-child{
+      margin-top:2.800vw ;
+    }
+      
+    }
+  </style>
+
+</head>
+
+<body
+  style="font-family:Myriad Pro, Inter,-apple-system,Framedcn,Helvetica Neue,Condensed,DisplayRegular,Helvetica,Arial,PingFang SC,Hiragino Sans GB,WenQuanYi Micro Hei,Microsoft Yahei,sans-serif;">
+  <div id="app">
+    <div class="survivorContainerDiv strangBox wrapPadding">
+      <div class="titleDiv strangBox pr47">
+        <div class="title normalText c1">Survivor verification instructions</div>
+        <!-- <div class="detail textF c25">the verification process involves thefollowing steps:</div> -->
+        <div class="textDetail c25">
+          1.Enter the round ID to obtain the server and client seed query results of this office.  <br/>
+          2.The client seed only accepts the first three participants. <br/>
+          3.Click Verify to validate the results of the game for the specific round. <br/>
+        </div>
+        <div class="line mt35"></div>
+      </div>
+      <div class="contentDiv ">
+        <div class="inputWrap flex-column flex-start strangBox pr47">
+          <div class="c1 fn60 normalText mb30">Verify a Survivor result</div>
+          <p class="fn35 c25 textF">Round ID:</p>
+          <div class="roundDiv mb30 mt28">
+            <div class="inputDiv  aic ">
+              <input type="text" v-model="inputRound" @input.prevent="inputFuc">
+            </div>
+            <div class="detailBtn bg3 br8 c1  textCenter normalText" @click="changeRound">Details</div>
+          </div>
+          <p class="fn35 c25 textF ">Server Seed:</p>
+          <div class="inputDiv mt28 aic mb30">
+            <input type="text" v-model="drandRandomness" readonly>
+          </div>
+          <p class="fn35 c25 textF ">Player Seed N1:</p>
+          <div class="inputDiv mt28 aic mb30">
+            <input type="text" v-model="playerSeedN1" readonly> 
+          </div>
+          <p class="fn35 c25 textF ">Player Seed N2:</p>
+          <div class="inputDiv mt28 aic mb30">
+            <input type="text" v-model="playerSeedN2" readonly>
+          </div>
+          <p class="fn35 c25 textF ">Player Seed N3:</p>
+          <div class="inputDiv mt28 aic mb30">
+            <input type="text" v-model="playerSeedN3" readonly>
+          </div>
+          <p class="fn35 c25 textF ">game HASH:</p>
+          <div class="inputDiv mt28 aic mb30">
+            <input type="text" v-model="survivorHash" readonly>
+          </div>
+          <div class="verifyBtn self_center bg3 br8 c1  textCenter normalText" @click="onVerifyBtn">Verify</div>
+          <div class="verificationResultWrap" v-show="verifyBool">
+            <div class="resultTitle c2">Verification Result:</div>
+          <div class="inputDiv mt28 aic mb30">
+            <input type="text" v-model="resultData" readonly>
+          </div>
+            <div class="radioWrap flex aic">
+            <div class="radioDiv" ><img src="./image/choosed.png" alt="" ></div>
+            <label>The expected outcome matches the actual outcome.</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script type="module">
+  const { ref, onMounted, computed } = Vue;
+  const app = Vue.createApp({
+    data() {
+      // 路径
+      const route = window.location.search.replace('?', '').split('&').reduce((res, item) => {
+        let kv = item.split('=');
+        res[kv[0]] = kv[1];
+        return res;
+      }, {})
+      // console.log(route);
+      const inputRound = ref(route.round || 1327)
+      const drandRandomness = ref(0)
+      const playerSeedN1 = ref(0)
+      const playerSeedN2 = ref(0)
+      const playerSeedN3 = ref(0)
+      const survivorHash = ref(0)
+      const resultData = ref(0)
+      const verifiedWinner = ref(0)
+      const actualWinner = ref(0)
+      const players = ref([])
+      const verifyBool=ref(false)
+
+      const callAPI=(data)=>{
+        fetch(`https://xpgameserver.cyberpunkr.io/xpg/CheckGameYolo?round=${inputRound.value}`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('网络错误');
+            }
+            return response.json();
+          })
+          .then(res => {
+            // 这里可以对返回的数据进行处理
+            drandRandomness.value=res.data.drandRandomness
+            playerSeedN1.value=res.data.playerSeedN1
+            playerSeedN2.value=res.data.playerSeedN2
+            survivorHash.value=res.data.yoLoHash
+            verifiedWinner.value=res.data.verifiedWinner ? res.data.verifiedWinner : 'NULL'
+            actualWinner.value=res.data.actualWinner ? res.data.actualWinner : 'NULL'
+            players.value= res.data.players ? JSON.parse(res.data.players):[]
+          })
+          .catch(error => {
+            console.error('发生错误:', error);
+          });
+      }
+
+      const inputFuc = (e) => {
+        e.preventDefault();
+
+      }
+
+      
+      const onVerifyBtn = () => {
+
+        verifyBool.value = true
+      }
+      const changeRound = () => {
+        verifyBool.value = false
+        callAPI()
+      }
+      onMounted(() => {
+        callAPI()
+      })
+
+
+
+      return {
+        inputRound, drandRandomness, playerSeedN1, playerSeedN2, survivorHash, verifiedWinner, players, actualWinner, playerSeedN3,
+        onVerifyBtn, inputFuc,
+         verifyBool, resultData,
+        callAPI, changeRound
+      }
+    },
+  });
+
+  app.mount('#app');
+
+
+</script>
+
+</html>
