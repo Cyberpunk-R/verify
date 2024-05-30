@@ -433,13 +433,13 @@
         return res;
       }, {})
       console.log(route, decodeURIComponent(window.location.search));
-      const inputRound = ref(route.round || 93_10000070)
-      const serverSeed = ref(route.serverSeed || "10d87eb6da8960f9bc8dc75bf7c7c821e14043bb")
-      const playerSeedN1 = ref(route.playerSeedN1 || "om7OWKMUr290PhgT1L4N")
-      const playerSeedN2 = ref(route.playerSeedN2 || "om7OWKMUr290PhgT1L4N")
-      const playerSeedN3 = ref(route.playerSeedN3 || 0)
-      const survivorHash = ref(route.survivorHash || "b8d29017cf7be94598530ce4339c04dd4018b9fc444cffe497e54a7447167045cd77ec0dc35a2889732c1bc747e0a4f6a65887790feec6c5ab5edc0cd5d24b40")
-      const resultData = ref(route.resultData || 2)
+      const inputRound = ref(route.round || 0)
+      const serverSeed = ref(route.serverSeed || "")
+      const playerSeedN1 = ref(route.playerSeedN1 || "")
+      const playerSeedN2 = ref(route.playerSeedN2 || "")
+      const playerSeedN3 = ref(route.playerSeedN3 || '')
+      const survivorHash = ref(route.survivorHash || '')
+      const resultData = ref(route.resultData || '')
       const verifyBool=ref(false)
 
       const inputFuc = (e) => {
