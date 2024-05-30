@@ -381,13 +381,13 @@
           <p class="fn35 c25 textF">Round ID:</p>
           <div class="roundDiv mb30 mt28">
             <div class="inputDiv  aic ">
-              <input type="text" v-model="inputRound" @input.prevent="inputFuc">
+              <input type="text" v-model="inputRound" @input.prevent="inputFuc" readonly>
             </div>
             <div class="detailBtn bg3 br8 c1  textCenter normalText" @click="changeRound">Details</div>
           </div>
           <p class="fn35 c25 textF ">Server Seed:</p>
           <div class="inputDiv mt28 aic mb30">
-            <input type="text" v-model="drandRandomness" readonly>
+            <input type="text" v-model="serverSeed" readonly>
           </div>
           <p class="fn35 c25 textF ">Player Seed N1:</p>
           <div class="inputDiv mt28 aic mb30">
@@ -427,72 +427,81 @@
   const app = Vue.createApp({
     data() {
       // 路径
-      const route = window.location.search.replace('?', '').split('&').reduce((res, item) => {
+      const route = decodeURIComponent(window.location.search).replace('?', '').split('&').reduce((res, item) => {
         let kv = item.split('=');
         res[kv[0]] = kv[1];
         return res;
       }, {})
-      // console.log(route);
+      console.log(route, decodeURIComponent(window.location.search));
       const inputRound = ref(route.round || 1327)
-      const drandRandomness = ref(0)
-      const playerSeedN1 = ref(0)
-      const playerSeedN2 = ref(0)
-      const playerSeedN3 = ref(0)
-      const survivorHash = ref(0)
-      const resultData = ref(0)
-      const verifiedWinner = ref(0)
-      const actualWinner = ref(0)
-      const players = ref([])
+      const serverSeed = ref(route.serverSeed || 0)
+      const playerSeedN1 = ref(route.playerSeedN1 || 0)
+      const playerSeedN2 = ref(route.playerSeedN2 || 0)
+      const playerSeedN3 = ref(route.playerSeedN3 || 0)
+      const survivorHash = ref(route.survivorHash || 0)
+      const resultData = ref(route.resultData || 0)
       const verifyBool=ref(false)
-
-      const callAPI=(data)=>{
-        fetch(`https://xpgameserver.cyberpunkr.io/xpg/CheckGameYolo?round=${inputRound.value}`)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('网络错误');
-            }
-            return response.json();
-          })
-          .then(res => {
-            // 这里可以对返回的数据进行处理
-            drandRandomness.value=res.data.drandRandomness
-            playerSeedN1.value=res.data.playerSeedN1
-            playerSeedN2.value=res.data.playerSeedN2
-            survivorHash.value=res.data.yoLoHash
-            verifiedWinner.value=res.data.verifiedWinner ? res.data.verifiedWinner : 'NULL'
-            actualWinner.value=res.data.actualWinner ? res.data.actualWinner : 'NULL'
-            players.value= res.data.players ? JSON.parse(res.data.players):[]
-          })
-          .catch(error => {
-            console.error('发生错误:', error);
-          });
-      }
 
       const inputFuc = (e) => {
         e.preventDefault();
 
       }
+      const getResult = () => {
+        resultData.value = serverSeed.value + ',' + playerSeedN1.value + ',' + playerSeedN2.value + ',' + playerSeedN3.value
+      }
+// func getResult(seed string, allNums[]int, cSeed ...orderSeed)[]int {
+//         hash:= generateHMAC([]byte(fmt.Sprintf("%s:%s:%s", cSeed[0].ClientSeed, cSeed[1].ClientSeed, cSeed[2].ClientSeed)), []byte(seed))
+//         allNums, hash = createNums(allNums, hash)
+//         allNums, hash = createNums(allNums, hash)
+//         betRoomNum:= len(allNums) - 1
+//         killInt64, _ := strconv.ParseInt(hash[0: 8], 16, 64)
+//         KillNumber:= gconv.Int(killInt64 % gconv.Int64(betRoomNum)) + 1
+//         return allNums[:KillNumber]
+//       }
 
-      
+// func createNums(allNums[]int, seed string)([]int, string) {
+//         hash:= sha256Str(seed)
+
+//         var nums []map[string]interface{ }
+//         for _, v := range allNums {
+//           nums = append(nums, map[string]interface{}{
+//             "num": v,
+//             "hash": hash,
+//           })
+//           hash = hash[1:]+ string(hash[0])
+//         }
+
+//         sort.Slice(nums, func(i, j int) bool {
+//           a:= nums[i]["hash"].(string)
+// 		b:= nums[j]["hash"].(string)
+// 		return a > b
+//         })
+//         var num []int
+//         for _, v := range nums {
+//           num = append(num, v["num"].(int))
+//         }
+//         return num, hash
+//       }
+
+
+
       const onVerifyBtn = () => {
 
         verifyBool.value = true
       }
       const changeRound = () => {
         verifyBool.value = false
-        callAPI()
       }
       onMounted(() => {
-        callAPI()
       })
 
 
 
       return {
-        inputRound, drandRandomness, playerSeedN1, playerSeedN2, survivorHash, verifiedWinner, players, actualWinner, playerSeedN3,
+        inputRound, serverSeed, playerSeedN1, playerSeedN2, survivorHash, playerSeedN3,
         onVerifyBtn, inputFuc,
          verifyBool, resultData,
-        callAPI, changeRound
+        changeRound
       }
     },
   });
