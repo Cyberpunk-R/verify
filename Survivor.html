@@ -443,6 +443,7 @@
       const verifyBool=ref(false)
 
       const dataFuc=(item)=>{
+        if(!Boolean(item) )return;
         let parsedArray = JSON.parse(item);
         console.log(item, typeof item, parsedArray, JSON.parse('[]') );
         if (Array.isArray(parsedArray)) {
