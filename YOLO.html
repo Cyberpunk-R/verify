@@ -462,7 +462,8 @@
         return res;
       }, {})
       // console.log(route);
-      const inputRound = ref(route.round || 1327)
+      const inputRound = ref(route.round || 2061)
+      const gameid = ref(route.gameid||80001)
       const drandRandomness = ref(0)
       const playerSeedN1 = ref(0)
       const playerSeedN2 = ref(0)
@@ -475,7 +476,17 @@
       const radioTWO=ref(true)
 
       const callAPI=(data)=>{
-        fetch(`https://xpgameserver.cyberpunkr.io/xpg/CheckGameYolo?round=${inputRound.value}`)
+        // fetch(`http://192.168.0.171:8081/game/fetch-game-verify-record?round=${inputRound.value}&game_id=${gameid.value}`)
+        fetch('http://192.168.0.171:8081/game/fetch-game-verify-record', {
+          method: 'POST', // 将请求方法更改为 POST
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            round: inputRound.value,
+            game_id: gameid.value,
+          }),
+        })
           .then(response => {
             if (!response.ok) {
               throw new Error('网络错误');
@@ -487,7 +498,7 @@
             drandRandomness.value=res.data.drandRandomness
             playerSeedN1.value=res.data.playerSeedN1
             playerSeedN2.value=res.data.playerSeedN2
-            yoLoHash.value=res.data.yoLoHash
+            yoLoHash.value=res.data.yoloHash
             verifiedWinner.value=res.data.verifiedWinner ? res.data.verifiedWinner : 'NULL'
             actualWinner.value=res.data.actualWinner ? res.data.actualWinner : 'NULL'
             players.value= res.data.players ? JSON.parse(res.data.players):[]
