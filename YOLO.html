@@ -426,7 +426,6 @@
                   <p class="c2">Player Nickname: {{item.nickName}}</p>
                   <p class="c2">Bet Amount: {{item.betAmount}}
                     <span> Seed: {{item.clientSeed}}</span>
-                    
                   </p>
                 </div>
               </div>
@@ -477,7 +476,7 @@
 
       const callAPI=(data)=>{
         // fetch(`http://192.168.0.171:8081/game/fetch-game-verify-record?round=${inputRound.value}&game_id=${gameid.value}`)
-        fetch('http://192.168.0.171:8081/game/fetch-game-verify-record', {
+        fetch('http://home.mega2win.com/game/fetch-game-verify-record', {
           method: 'POST', // 将请求方法更改为 POST
           headers: {
             'Content-Type': 'application/json',
@@ -494,6 +493,7 @@
             return response.json();
           })
           .then(res => {
+            if (res.code != 0) return
             // 这里可以对返回的数据进行处理
             drandRandomness.value=res.data.drandRandomness
             playerSeedN1.value=res.data.playerSeedN1

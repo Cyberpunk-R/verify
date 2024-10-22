@@ -433,7 +433,7 @@
         return res;
       }, {})
       // console.log(route, decodeURIComponent(window.location.search));
-      const inputRound = ref(route.round || 0)
+      const inputRound = ref(route.round || 173)
       const serverSeed = ref( "")
       const playerSeedN1 = ref( "")
       const playerSeedN2 = ref("")
@@ -441,6 +441,7 @@
       const survivorHash = ref('')
       const resultData = ref('')
       const verifyBool=ref(false)
+      const gameid = ref(route.gameid || 80002)
 
       const dataFuc=(item)=>{
         if(!Boolean(item) )return;
@@ -462,7 +463,16 @@
       }
 
       const callAPI = (data) => {
-        fetch(`https://xpgameserver.cyberpunkr.io/xpg/CheckGameYolo?round=${inputRound.value}&gameId=1000018`)
+        fetch(`http://home.mega2win.com/game/fetch-game-verify-record`, {
+          method: 'POST', // 将请求方法更改为 POST
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            round: inputRound.value,
+            game_id: gameid.value,
+          }),
+        })
           .then(response => {
             if (!response.ok) {
               throw new Error('网络错误');
@@ -470,12 +480,13 @@
             return response.json();
           })
           .then(res => {
+            if(res.code!=0) return
             // 这里可以对返回的数据进行处理
             serverSeed.value = res.data.drandRandomness
             playerSeedN1.value = res.data.playerSeedN1
             playerSeedN2.value = res.data.playerSeedN2
             playerSeedN3.value = res.data.playerSeedN3
-            survivorHash.value = res.data.yoLoHash
+            survivorHash.value = res.data.yoloHash
             resultData.value = dataFuc(res.data.players)
           })
           .catch(error => {
