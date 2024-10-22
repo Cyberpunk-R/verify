@@ -469,7 +469,7 @@
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            round: inputRound.value,
+            round: Number(inputRound.value),
             game_id: gameid.value,
           }),
         })
